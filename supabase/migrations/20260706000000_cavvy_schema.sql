@@ -71,6 +71,10 @@ CREATE TABLE cavvy.horses (
     disposition_date DATE,
     disposition_notes TEXT,
     profile_photo_url TEXT,
+    -- Pedigree link override. AQHA has no public API, but All Breed Pedigree
+    -- URLs are predictable from the registered name; this column is only for
+    -- horses whose auto-derived URL is wrong (name collisions, spelling).
+    pedigree_url TEXT,
     drive_folder_url TEXT,
     photos_album_url TEXT,
     broodmare_active BOOLEAN NOT NULL DEFAULT false,

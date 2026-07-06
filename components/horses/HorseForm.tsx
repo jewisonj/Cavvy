@@ -28,6 +28,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
     owned: horse?.owned ?? true,
     acquired_date: horse?.acquired_date || '',
     broodmare_active: horse?.broodmare_active ?? false,
+    pedigree_url: horse?.pedigree_url || '',
     drive_folder_url: horse?.drive_folder_url || '',
     photos_album_url: horse?.photos_album_url || '',
   })
@@ -59,6 +60,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
         sire_id: formData.sire_id || null,
         dam_id: formData.dam_id || null,
         acquired_date: formData.acquired_date || null,
+        pedigree_url: formData.pedigree_url || null,
         drive_folder_url: formData.drive_folder_url || null,
         photos_album_url: formData.photos_album_url || null,
       }
@@ -311,8 +313,23 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
 
       {/* Google Integration */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">Document Storage</h2>
+        <h2 className="text-xl font-semibold mb-4">Links & Document Storage</h2>
         <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              All Breed Pedigree URL (override)
+            </label>
+            <input
+              type="url"
+              value={formData.pedigree_url}
+              onChange={(e) =>
+                setFormData({ ...formData, pedigree_url: e.target.value })
+              }
+              className="form-input"
+              placeholder="Auto-derived from registered name — only set if that link is wrong"
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium mb-2">
               Google Drive Folder URL

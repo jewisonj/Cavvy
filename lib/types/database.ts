@@ -48,6 +48,7 @@ export interface Horse {
   disposition_date?: string
   disposition_notes?: string
   profile_photo_url?: string
+  pedigree_url?: string
   drive_folder_url?: string
   photos_album_url?: string
   broodmare_active: boolean

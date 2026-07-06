@@ -28,7 +28,7 @@ export default async function HorseDetailPage({
     notFound()
   }
 
-  const [offspringRes, eventsRes, treatmentsRes, documentsRes] = await Promise.all([
+  const [offspringRes, eventsRes, treatmentsRes, documentsRes, herdRes] = await Promise.all([
     // Family: every horse this one produced, as dam or sire
     supabase
       .from('horses')
@@ -59,6 +59,10 @@ export default async function HorseDetailPage({
       .select('*')
       .eq('horse_id', id)
       .order('uploaded_at', { ascending: false }),
+    // Full roster for the in-system pedigree tree (herd is small)
+    supabase
+      .from('horses')
+      .select('id, registered_name, barn_name, sex, sire_id, dam_id, pedigree_url'),
   ])
 
   return (
@@ -68,6 +72,7 @@ export default async function HorseDetailPage({
       events={eventsRes.data || []}
       treatments={treatmentsRes.data || []}
       documents={documentsRes.data || []}
+      herd={herdRes.data || []}
       canEdit={profile?.role === 'owner' || profile?.role === 'staff'}
     />
   )

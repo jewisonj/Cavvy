@@ -20,6 +20,8 @@ import {
 import MilestoneSchedule from '@/components/breeding/MilestoneSchedule'
 import DocumentForm, { DOC_TYPE_LABELS } from './DocumentForm'
 import ProfilePhotoUpload from './ProfilePhotoUpload'
+import PedigreeChart from './PedigreeChart'
+import { getAllBreedPedigreeUrl, type PedigreeRef } from '@/lib/utils/pedigree'
 
 type HorseRef = Pick<Horse, 'id' | 'barn_name' | 'registered_name' | 'sex'> & {
   profile_photo_url?: string
@@ -34,7 +36,7 @@ type DetailEvent = BreedingEvent & {
   ultrasound_checks: UltrasoundCheck[]
 }
 
-const TABS = ['Overview', 'Family', 'Breeding', 'Documents & Photos'] as const
+const TABS = ['Overview', 'Family', 'Pedigree', 'Breeding', 'Documents & Photos'] as const
 type Tab = (typeof TABS)[number]
 
 function refName(h: HorseRef | null | undefined): string {
@@ -94,6 +96,7 @@ interface HorseDetailProps {
   events: DetailEvent[]
   treatments: HormoneTreatment[]
   documents: DocRecord[]
+  herd: PedigreeRef[]
   canEdit: boolean
 }
 
@@ -103,6 +106,7 @@ export default function HorseDetail({
   events,
   treatments,
   documents,
+  herd,
   canEdit,
 }: HorseDetailProps) {
   const router = useRouter()
@@ -289,6 +293,68 @@ export default function HorseDetail({
                 ))}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Pedigree */}
+      {tab === 'Pedigree' && (
+        <div className="space-y-6">
+          <div>
+            <div className="flex flex-wrap justify-between items-center gap-3 mb-3">
+              <h2 className="text-lg font-semibold">
+                Pedigree — {displayName}
+              </h2>
+              <div className="flex gap-2 text-xs text-text-muted">
+                <span className="flex items-center gap-1">
+                  <span className="w-3 h-3 rounded-sm bg-blue-300 inline-block" /> Sire line
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-3 h-3 rounded-sm bg-rose-300 inline-block" /> Dam line
+                </span>
+              </div>
+            </div>
+            <PedigreeChart horseId={horse.id} herd={herd} />
+            <p className="text-xs text-text-muted mt-3">
+              Built from horses in the system. Add ancestors as unowned horse records to
+              extend the tree; deeper generations live on All Breed Pedigree.
+            </p>
+          </div>
+
+          <div className="panel p-6">
+            <h3 className="text-lg font-semibold mb-3">Registry Links</h3>
+            <div className="flex flex-wrap gap-3">
+              {getAllBreedPedigreeUrl(horse) ? (
+                <a
+                  href={getAllBreedPedigreeUrl(horse)!}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary text-sm"
+                >
+                  All Breed Pedigree ↗
+                </a>
+              ) : (
+                <p className="text-sm text-text-muted self-center">
+                  No registered name yet — the All Breed Pedigree link appears once one is set
+                  (or paste a link on the Edit page).
+                </p>
+              )}
+              {horse.aqha_number && (
+                <a
+                  href="https://www.aqha.com/myaqha"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary text-sm"
+                  title="AQHA records are member-only; look up by registration number"
+                >
+                  AQHA Member Portal (#{horse.aqha_number}) ↗
+                </a>
+              )}
+            </div>
+            <p className="text-xs text-text-muted mt-3">
+              AQHA&apos;s registry has no public API — records open in the member portal.
+              All Breed Pedigree links are derived automatically from the registered name.
+            </p>
           </div>
         </div>
       )}
