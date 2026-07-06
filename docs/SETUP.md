@@ -5,7 +5,7 @@
 ### 1. Supabase Project Setup
 
 1. Go to [https://supabase.com](https://supabase.com) and create a new project
-   - Project name: `breman`
+   - Project name: `cavvy`
    - Database password: (save this securely)
    - Region: Choose closest to Wisconsin (likely `us-east-1`)
 
@@ -108,7 +108,7 @@ Similar process to Drive API - verify current API status as it has restrictions.
 1. Install Fly CLI: `curl -L https://fly.io/install.sh | sh`
 2. Login: `fly auth login`
 3. Create app: `fly launch`
-   - App name: `breman`
+   - App name: `cavvy`
    - Region: `ord` (Chicago, closest to Wisconsin)
 4. Set secrets:
    ```bash

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { signOut } from '@/lib/auth/utils'
+import { createClient } from '@/lib/supabase/client'
 import type { UserProfile } from '@/lib/types/database'
 
 interface AppNavProps {
@@ -13,7 +13,7 @@ export default function AppNav({ profile }: AppNavProps) {
   const router = useRouter()
 
   const handleSignOut = async () => {
-    await signOut()
+    await createClient().auth.signOut()
     router.push('/login')
     router.refresh()
   }
@@ -24,7 +24,7 @@ export default function AppNav({ profile }: AppNavProps) {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
             <Link href="/app" className="text-xl font-bold">
-              BreMan
+              Cavvy
             </Link>
 
             <div className="hidden md:flex space-x-4">

@@ -7,7 +7,10 @@ import type { Horse, SexEnum } from '@/lib/types/database'
  * 2. barn_name (if set)
  * 3. Placeholder based on dam's barn_name + sex
  */
-export function getHorseDisplayName(horse: Horse, dam?: Horse | null): string {
+export function getHorseDisplayName(
+  horse: Pick<Horse, 'registered_name' | 'barn_name' | 'sex'>,
+  dam?: Pick<Horse, 'barn_name' | 'registered_name'> | null
+): string {
   if (horse.registered_name) {
     return horse.registered_name
   }

@@ -68,8 +68,8 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">BreMan</h1>
-          <p className="text-text-secondary">Equine Breeding Management</p>
+          <h1 className="text-4xl font-bold mb-2">Cavvy</h1>
+          <p className="text-text-secondary">Farm & Stable Management</p>
         </div>
 
         <div className="panel p-8">
@@ -86,7 +86,7 @@ export default function SignupPage() {
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 required
-                className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                className="form-input"
                 placeholder="John Doe"
               />
             </div>
@@ -101,7 +101,7 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                className="form-input"
                 placeholder="you@example.com"
               />
             </div>
@@ -115,7 +115,7 @@ export default function SignupPage() {
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                className="form-input"
                 placeholder="(555) 123-4567"
               />
             </div>
@@ -131,7 +131,7 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                className="form-input"
                 placeholder="••••••••"
               />
               <p className="mt-1 text-xs text-text-muted">At least 6 characters</p>
@@ -145,7 +145,7 @@ export default function SignupPage() {
                 id="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value as UserRole)}
-                className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                className="form-input"
               >
                 <option value="owner">Owner</option>
                 <option value="staff">Staff</option>
@@ -154,7 +154,7 @@ export default function SignupPage() {
             </div>
 
             {error && (
-              <div className="p-3 bg-red-500/10 border border-red-500/50 rounded-md text-red-500 text-sm">
+              <div className="alert-error p-3 text-sm">
                 {error}
               </div>
             )}

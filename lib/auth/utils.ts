@@ -1,6 +1,6 @@
-// Authentication utility functions
+// Authentication utility functions — SERVER ONLY (uses next/headers via the
+// server Supabase client). Client components sign out via lib/supabase/client.
 import { createClient as createServerClient } from '@/lib/supabase/server'
-import { createClient as createBrowserClient } from '@/lib/supabase/client'
 import type { UserProfile } from '@/lib/types/database'
 
 /**
@@ -45,12 +45,4 @@ export async function userHasRole(role: string): Promise<boolean> {
 export async function userHasAnyRole(roles: string[]): Promise<boolean> {
   const profile = await getCurrentUserProfile()
   return profile ? roles.includes(profile.role) : false
-}
-
-/**
- * Sign out user
- */
-export async function signOut() {
-  const supabase = createBrowserClient()
-  await supabase.auth.signOut()
 }

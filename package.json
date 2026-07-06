@@ -1,5 +1,5 @@
 {
-  "name": "breman",
+  "name": "cavvy",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -8,10 +8,11 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "description": "Equine Breeding Management System",
+  "description": "Farm and stable management for equine breeding operations",
   "dependencies": {
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.105.4",
+    "@tailwindcss/postcss": "^4.3.2",
     "@types/node": "^25.8.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

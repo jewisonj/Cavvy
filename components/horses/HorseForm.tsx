@@ -109,7 +109,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, barn_name: e.target.value })
               }
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
               placeholder="What you call her"
             />
           </div>
@@ -124,7 +124,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, registered_name: e.target.value })
               }
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
               placeholder="AQHA registered name"
             />
           </div>
@@ -139,7 +139,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, aqha_number: e.target.value })
               }
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
               placeholder="Registration number"
             />
           </div>
@@ -154,7 +154,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
                 setFormData({ ...formData, sex: e.target.value as SexEnum })
               }
               required
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
             >
               <option value="mare">Mare</option>
               <option value="stallion">Stallion</option>
@@ -174,7 +174,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, dob: e.target.value })
               }
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
             />
           </div>
 
@@ -188,7 +188,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, color: e.target.value })
               }
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
               placeholder="Bay, sorrel, etc."
             />
           </div>
@@ -204,7 +204,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               setFormData({ ...formData, markings: e.target.value })
             }
             rows={3}
-            className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+            className="form-input"
             placeholder="Describe any distinctive markings"
           />
         </div>
@@ -221,7 +221,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, dam_id: e.target.value })
               }
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
             >
               <option value="">Not specified</option>
               {potentialDams.map((dam) => (
@@ -239,7 +239,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, sire_id: e.target.value })
               }
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
             >
               <option value="">Not specified</option>
               {potentialSires.map((sire) => (
@@ -302,7 +302,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
                 onChange={(e) =>
                   setFormData({ ...formData, acquired_date: e.target.value })
                 }
-                className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                className="form-input"
               />
             </div>
           )}
@@ -323,7 +323,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, drive_folder_url: e.target.value })
               }
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
               placeholder="https://drive.google.com/drive/folders/..."
             />
           </div>
@@ -338,7 +338,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, photos_album_url: e.target.value })
               }
-              className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="form-input"
               placeholder="https://photos.app.goo.gl/..."
             />
           </div>
@@ -346,7 +346,7 @@ export default function HorseForm({ horse, allHorses }: HorseFormProps) {
       </div>
 
       {error && (
-        <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-md text-red-500">
+        <div className="alert-error">
           {error}
         </div>
       )}

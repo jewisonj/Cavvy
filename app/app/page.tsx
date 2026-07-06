@@ -24,16 +24,16 @@ export default async function AppHomePage() {
         <Link href="/app/breeding" className="panel p-6 panel-hover">
           <h2 className="text-xl font-semibold mb-2">Breeding</h2>
           <p className="text-text-secondary text-sm">
-            Track breeding events, heat cycles, and pregnancy checks
+            Season plan — breedings, check schedule, estrumate shots, due dates
           </p>
         </Link>
 
-        <Link href="/app/foaling" className="panel p-6 panel-hover">
+        <div className="panel p-6 opacity-50">
           <h2 className="text-xl font-semibold mb-2">Foaling</h2>
           <p className="text-text-secondary text-sm">
-            Monitor upcoming foalings and record births
+            Monitor upcoming foalings and record births (Coming Soon)
           </p>
-        </Link>
+        </div>
 
         <div className="panel p-6 opacity-50">
           <h2 className="text-xl font-semibold mb-2">Reports</h2>

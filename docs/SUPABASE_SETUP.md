@@ -1,140 +1,108 @@
-# Supabase Setup - Step by Step
+# Supabase Setup — Shared Project
 
-Follow these steps to set up your BreMan database:
+Cavvy runs inside the **same Supabase project as mwes-invoice and spa-scheduler**.
+No new project is created. All Cavvy tables live in a dedicated `cavvy` Postgres
+schema so nothing collides with the other apps' tables in `public`. Auth is shared —
+one login works across the app family — but Cavvy access requires a row in
+`cavvy.user_profiles`.
 
-## Step 1: Create Supabase Project
+## Step 1: Run the Cavvy schema migration
 
-1. Go to [https://supabase.com](https://supabase.com)
-2. Sign in or create an account
-3. Click "New Project"
-4. Fill in the details:
-   - **Organization**: Choose your organization
-   - **Name**: `breman` (or `BreMan`)
-   - **Database Password**: Create a strong password and **SAVE IT SECURELY**
-   - **Region**: Choose `East US (North Virginia)` or closest to Wisconsin
-   - **Pricing Plan**: Free tier is fine to start
-5. Click "Create new project"
-6. Wait 2-3 minutes for the project to provision
+1. Open the **shared project** in the Supabase dashboard
+2. Go to **SQL Editor** → **New Query**
+3. Paste the contents of `supabase/migrations/20260706000000_cavvy_schema.sql`
+4. Click **Run** — you should see "Success. No rows returned"
 
-## Step 2: Get Your API Credentials
+This creates the `cavvy` schema with all tables, enums, indexes, and RLS policies.
+It does not touch anything belonging to mwes-invoice or spa-scheduler.
 
-Once your project is ready:
+To verify: **Table Editor** → schema dropdown (top left) → select `cavvy` — you
+should see `horses`, `breeding_events`, `heat_observations`, `ultrasound_checks`,
+`hormone_treatments`, `foaling_events`, `documents`, and the rest.
 
-1. Go to **Project Settings** (gear icon in sidebar)
-2. Click on **API** in the left menu
-3. You'll see:
-   - **Project URL** - Copy this
-   - **Project API keys**:
-     - `anon` `public` - Copy this (this is safe to use in the browser)
-     - `service_role` `secret` - Copy this (KEEP THIS SECRET!)
+## Step 2: Expose the `cavvy` schema to the API
 
-## Step 3: Create Your .env.local File
+PostgREST only serves schemas you explicitly list:
 
-1. In your BreMan project folder, create a file named `.env.local`
-2. Paste the following and replace with YOUR values:
+1. Go to **Project Settings** → **API**
+2. Find **Exposed schemas** (defaults to `public, graphql_public`)
+3. Add `cavvy` to the list and save
+
+Without this step, every Cavvy query fails with "The schema must be one of the
+following...". The JS clients already select the schema via
+`createClient(..., { db: { schema: 'cavvy' } })`.
+
+## Step 3: Create the storage bucket
+
+Storage buckets are project-global, so Cavvy's is name-prefixed:
+
+1. Go to **Storage** → **New bucket**
+2. Name: `cavvy-media`, **Public bucket ON** — horse photos are served by public
+   URL in the app. Keep sensitive documents in Drive, not this bucket.
+3. Add an upload policy (Storage → Policies → `cavvy-media`) so authenticated
+   users can upload:
+
+```sql
+CREATE POLICY "cavvy users upload media" ON storage.objects
+    FOR INSERT WITH CHECK (bucket_id = 'cavvy-media' AND auth.role() = 'authenticated');
+
+CREATE POLICY "cavvy users update media" ON storage.objects
+    FOR UPDATE USING (bucket_id = 'cavvy-media' AND auth.role() = 'authenticated');
+```
+
+Horse profile photos upload to `cavvy-media/horses/{horse_id}/...`.
+
+## Step 4: Environment variables
+
+Create `.env.local` using the **shared project's** URL and keys — the same values
+mwes-invoice and spa-scheduler use:
 
 ```bash
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key-here
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-secret-key-here
-
-# Anthropic API (you can add this later)
-ANTHROPIC_API_KEY=
-
-# App URL
+NEXT_PUBLIC_SUPABASE_URL=https://your-shared-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=shared-project-anon-key
+SUPABASE_SERVICE_ROLE_KEY=shared-project-service-role-key
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-**Important**: Never commit this file to git (it's already in .gitignore)
+Never commit `.env.local` (already gitignored).
 
-## Step 4: Run Database Migrations
+## Step 5: Create your Cavvy user profile
 
-Now we'll create all the tables:
+Sign up through the app (or use your existing shared-project login), then grant it
+Cavvy access. In SQL Editor:
 
-1. In Supabase dashboard, go to **SQL Editor** (in the left sidebar)
-2. Click **New Query** button
-3. Copy the contents of `supabase/migrations/20260515_initial_schema.sql` from your project
-4. Paste into the SQL Editor
-5. Click **Run** (or press Ctrl+Enter)
-6. You should see "Success. No rows returned" - this is good!
+```sql
+INSERT INTO cavvy.user_profiles (id, display_name, role, email)
+SELECT id, 'Jack', 'owner', email FROM auth.users WHERE email = 'you@example.com';
+```
 
-7. Click **New Query** again
-8. Copy the contents of `supabase/migrations/20260516_rls_policies.sql`
-9. Paste and **Run**
-10. Should also complete successfully
+A shared-project user with no `cavvy.user_profiles` row has **no** Cavvy access —
+RLS denies every table. That's the isolation boundary between the apps' users.
 
-## Step 5: Verify Tables Were Created
+## Step 6: Test
 
-1. Go to **Table Editor** in the left sidebar
-2. You should see all these tables:
-   - `user_profiles`
-   - `horses`
-   - `heat_observations`
-   - `breeding_events`
-   - `ultrasound_checks`
-   - `semen_shipments`
-   - `foaling_events`
-   - `foaling_prep_observations`
-   - `attachments`
-   - `documents`
-   - `costs`
-   - `breeding_contracts`
-   - `stallion_details`
-   - `health_events`
-   - `alerts`
-   - `dictation_log`
+```bash
+npm run dev
+```
 
-## Step 6: Configure Email Auth (Optional but Recommended)
-
-1. Go to **Authentication** → **Providers** in Supabase
-2. Make sure **Email** is enabled (it should be by default)
-3. Under **Auth Settings** → **Email Templates**, you can customize the signup email if you want
-
-## Step 7: Test Your Connection
-
-1. In your BreMan project folder, run:
-   ```bash
-   npm run dev
-   ```
-
-2. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-3. You should see the BreMan landing page
-
-4. Click **Create Account** and try signing up with:
-   - Display Name: Your name
-   - Email: Your email
-   - Password: At least 6 characters
-   - Role: Owner
-
-5. If signup works, you're connected! 🎉
+Open [http://localhost:3000](http://localhost:3000), log in, and you should land on
+the dashboard. Add a horse to confirm writes work.
 
 ## Troubleshooting
 
-### "Failed to create user profile"
-- Check that both migrations ran successfully
-- Verify RLS policies are in place
-- Check the browser console for detailed errors
+### "The schema must be one of the following: public, graphql_public"
+- Step 2 was skipped — expose `cavvy` under Project Settings → API
+
+### "Failed to create user profile" / everything reads as empty
+- Your login has no `cavvy.user_profiles` row (Step 5) — RLS is denying access
 
 ### "Cannot connect to Supabase"
-- Verify your `.env.local` has the correct credentials
-- Make sure you copied the FULL URLs and keys (they're long!)
-- Restart your dev server after adding .env.local
+- Verify `.env.local` has the shared project's full URL and keys
+- Restart the dev server after editing `.env.local`
 
-### Project is paused
-- Free tier projects auto-pause after inactivity
-- Go to Supabase dashboard and click "Restore" if needed
+## Notes
 
-## Next Steps
-
-Once your database is set up and you can sign up:
-1. Add your first horse to the system
-2. Start tracking breeding events
-3. Set up AI dictation (requires Anthropic API key)
-
-## Need Help?
-
-- Check the Supabase logs: **Database** → **Logs** in dashboard
-- View RLS policy errors: **Authentication** → **Policies**
-- Check migration errors in SQL Editor output
+- The old standalone-project migrations are archived in
+  `supabase/migrations/archive/` and were never deployed anywhere.
+- To regenerate TypeScript types once the Supabase CLI is wired up:
+  `npx supabase gen types typescript --schema cavvy > lib/types/supabase.ts`
