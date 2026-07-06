@@ -1,16 +1,24 @@
 import { redirect } from 'next/navigation'
-import { getCurrentUserProfile } from '@/lib/auth/utils'
+import { getAuthState } from '@/lib/auth/utils'
 import AppNav from '@/components/AppNav'
+import NoAccess from '@/components/NoAccess'
 
 export default async function AppLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const profile = await getCurrentUserProfile()
+  const { user, profile, profileError } = await getAuthState()
 
-  if (!profile) {
+  if (!user) {
     redirect('/login')
+  }
+
+  // Signed in but no Cavvy profile: render an explanation instead of
+  // redirecting — the middleware would bounce /login straight back here,
+  // producing an infinite 307 loop.
+  if (!profile) {
+    return <NoAccess email={user.email} profileError={profileError} />
   }
 
   return (
