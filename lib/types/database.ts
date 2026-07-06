@@ -12,7 +12,8 @@ export type ShipMethod = 'ups' | 'fedex' | 'courier_counter_to_counter' | 'other
 export type FoalingOutcome = 'live' | 'stillborn' | 'aborted' | 'dystocia_live' | 'dystocia_loss'
 export type UdderDevelopment = 'none' | 'filling' | 'full' | 'very_full' | 'dripping'
 export type UserRole = 'owner' | 'staff' | 'vet'
-export type EntityType = 'horse' | 'breeding_event' | 'heat_observation' | 'ultrasound_check' | 'foaling_event' | 'foaling_prep' | 'semen_shipment' | 'other'
+export type EntityType = 'horse' | 'breeding_event' | 'heat_observation' | 'ultrasound_check' | 'foaling_event' | 'foaling_prep' | 'semen_shipment' | 'hormone_treatment' | 'other'
+export type HormoneTreatmentType = 'estrumate' | 'lutalyse' | 'regumate' | 'deslorelin' | 'hcg' | 'oxytocin' | 'other'
 export type FileType = 'image' | 'video' | 'pdf' | 'other'
 export type DocType = 'contract' | 'coggins' | 'registration' | 'health_cert' | 'vet_record' | 'other'
 export type CostType = 'stud_fee' | 'shipping' | 'semen' | 'vet_ultrasound' | 'vet_other' | 'mare_care' | 'registration' | 'other'
@@ -46,6 +47,7 @@ export interface Horse {
   acquired_date?: string
   disposition_date?: string
   disposition_notes?: string
+  profile_photo_url?: string
   drive_folder_url?: string
   photos_album_url?: string
   broodmare_active: boolean
@@ -104,6 +106,19 @@ export interface UltrasoundCheck {
   vet_present: boolean
   notes?: string
   image_urls?: string[]
+  is_historical: boolean
+  created_at: string
+}
+
+export interface HormoneTreatment {
+  id: string
+  mare_id: string
+  treatment_date: string
+  treatment_type: HormoneTreatmentType
+  dose?: string
+  administered_by: string
+  vet_present: boolean
+  notes?: string
   is_historical: boolean
   created_at: string
 }
