@@ -138,8 +138,45 @@ The schema already had the right bones (`sire_id`/`dam_id` self-references on
 - `attachments` table unchanged — still the future home for in-the-moment clinical
   photos once event detail views land.
 
+## Round 2 (same branch, before first migration run)
+
+### Pedigree / registry integration
+AQHA's registry is a **closed system** — no public API; records live behind the
+member portal. So registry integration is structured as:
+
+- **All Breed Pedigree link-outs** — ABP URLs are predictable from the registered
+  name (`Metallic Cat` → `allbreedpedigree.com/metallic+cat`), so every registered
+  horse gets an automatic "All Breed Pedigree ↗" link with zero data entry. A
+  `horses.pedigree_url` override column (added to the migration — safe, it hadn't
+  been run yet) handles name collisions/misspellings, editable on the horse form.
+- **In-app pedigree chart** — new Pedigree tab on the horse detail page renders a
+  classic 3-generation chart (parents → great-grandparents) from in-system
+  `dam_id`/`sire_id` links, sire line in blue / dam line in rose, each ancestor
+  clickable in-app plus an ABP link-out per ancestor. Outside ancestors extend the
+  tree as unowned horse records.
+- **AQHA member portal link** shown alongside the registration number.
+- Scraping ABP for auto-import was considered and skipped for now (no API, fragile
+  HTML, ToS questions). If wanted later: an AI-assisted "paste the pedigree text /
+  drop a screenshot" import through the same confirm-before-write flow as dictation.
+
+### Foaling page (`/app/foaling`)
+- "Expecting" board: every active pregnancy (bred, not open/lost, not yet foaled)
+  with days along, watch-opens date, due date, and status badges (Unconfirmed /
+  In Foal / Foaling Watch at 320d / Overdue at 350d).
+- **Record Foaling** slide-out: for live outcomes it creates the foal's `horses`
+  record automatically — sex, DOB, `aqha_age_year`, and **dam/sire wired from the
+  breeding event** — then the foaling_event with placenta checks and complications.
+  This is the flow that makes the Family tab self-populating.
+- Recent Foalings list for the year, with click-through to mare and foal.
+
+### Dashboard
+Replaced the static cards with real data: stat tiles (active broodmares, confirmed
+in foal, on foaling watch, foals this year) and a **Needs Attention** list —
+overdue/due-soon pregnancy checks, mares on foaling watch or past due, and active
+estrumate heat windows — each linking to the page where you act on it.
+
 ## Deferred (unchanged from plan)
 
-Dictation, notifications/alerts engine, contract parsing, costs UI, foaling watch
-mode, Drive API listing. The dashboard now shows real upcoming-date data, but the
-full alerts table/edge-function pipeline is still post-MVP.
+Dictation, notifications/alerts engine (dashboard action items now cover the
+in-app portion), contract parsing, costs UI, foaling prep observations, Drive API
+listing.
