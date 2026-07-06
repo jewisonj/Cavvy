@@ -13,9 +13,9 @@ export default async function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center p-8">
       <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-6xl font-bold mb-4">BreMan</h1>
+        <h1 className="text-6xl font-bold mb-4">Cavvy</h1>
         <p className="text-text-secondary text-xl mb-8">
-          Equine Breeding Management System
+          Farm & Stable Management
         </p>
 
         <div className="panel p-8 mb-8">

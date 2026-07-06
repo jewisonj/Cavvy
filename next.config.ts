@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' }, // Google Photos
-      { protocol: 'https', hostname: '*.supabase.co' }, // breman-media storage bucket
+      { protocol: 'https', hostname: '*.supabase.co' }, // cavvy-media storage bucket
     ],
   },
 }

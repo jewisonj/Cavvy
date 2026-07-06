@@ -44,8 +44,8 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">BreMan</h1>
-          <p className="text-text-secondary">Equine Breeding Management</p>
+          <h1 className="text-4xl font-bold mb-2">Cavvy</h1>
+          <p className="text-text-secondary">Farm & Stable Management</p>
         </div>
 
         <div className="panel p-8">

@@ -8,8 +8,8 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
-      // Shared Supabase project — BreMan tables live in the `breman` schema
-      db: { schema: 'breman' },
+      // Shared Supabase project — Cavvy tables live in the `cavvy` schema
+      db: { schema: 'cavvy' },
       cookies: {
         getAll() {
           return cookieStore.getAll()

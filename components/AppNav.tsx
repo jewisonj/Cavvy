@@ -24,7 +24,7 @@ export default function AppNav({ profile }: AppNavProps) {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
             <Link href="/app" className="text-xl font-bold">
-              BreMan
+              Cavvy
             </Link>
 
             <div className="hidden md:flex space-x-4">

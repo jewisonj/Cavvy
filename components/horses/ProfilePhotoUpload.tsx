@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-const BUCKET = 'breman-media'
+const BUCKET = 'cavvy-media'
 
 interface ProfilePhotoUploadProps {
   horseId: string

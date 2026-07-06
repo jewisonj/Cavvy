@@ -1,4 +1,4 @@
-# BreMan Refactor — July 2026
+# Cavvy Refactor — July 2026
 
 Analysis + implementation record for the five workstreams requested:
 
@@ -26,40 +26,40 @@ Analysis + implementation record for the five workstreams requested:
 
 ## 1. Shared Supabase project
 
-**Decision: dedicated `breman` Postgres schema inside the shared project.**
+**Decision: dedicated `cavvy` Postgres schema inside the shared project.**
 
 Why a schema instead of table prefixes or keeping `public`:
 
 - mwes-invoice and spa-scheduler already own tables in `public`. A schema gives
-  BreMan a clean namespace with zero collision risk (tables, enum types, functions,
-  triggers all live in `breman.*`), and `supabase gen types` can target it directly.
+  Cavvy a clean namespace with zero collision risk (tables, enum types, functions,
+  triggers all live in `cavvy.*`), and `supabase gen types` can target it directly.
 - Supabase Auth (`auth.users`) is shared project-wide, which is what we want —
-  one login for Jack/Natalie across the app family. BreMan keeps its own
-  `breman.user_profiles` for BreMan roles (owner/staff/vet), so a user existing
-  for mwes-invoice doesn't automatically get BreMan access: no `breman.user_profiles`
+  one login for Jack/Natalie across the app family. Cavvy keeps its own
+  `cavvy.user_profiles` for Cavvy roles (owner/staff/vet), so a user existing
+  for mwes-invoice doesn't automatically get Cavvy access: no `cavvy.user_profiles`
   row → RLS denies everything.
 - PostgREST only exposes schemas you list. One dashboard setting
-  (API → Exposed schemas → add `breman`) and the JS client's
-  `db: { schema: 'breman' }` option does the rest.
+  (API → Exposed schemas → add `cavvy`) and the JS client's
+  `db: { schema: 'cavvy' }` option does the rest.
 
 What changed:
 
 - Old migrations moved to `supabase/migrations/archive/` (never applied anywhere).
-- New consolidated migration `20260706000000_breman_schema.sql`: creates the schema,
+- New consolidated migration `20260706000000_cavvy_schema.sql`: creates the schema,
   all enums/tables/indexes/triggers **and** full RLS in one pass. Also switches
   `uuid_generate_v4()` → `gen_random_uuid()` (built-in, no extension needed) and
   moves the role-helper functions out of the `auth` schema (hosted Supabase now
-  disallows user objects there) into `breman`.
-- `lib/supabase/client.ts` / `server.ts` pass `db: { schema: 'breman' }`.
-- Storage: bucket names are project-global, so BreMan uses a `breman-media` bucket
+  disallows user objects there) into `cavvy`.
+- `lib/supabase/client.ts` / `server.ts` pass `db: { schema: 'cavvy' }`.
+- Storage: bucket names are project-global, so Cavvy uses a `cavvy-media` bucket
   (documented in `docs/SUPABASE_SETUP.md`).
 - `.env.local.example` notes the URL/keys are the shared project's (same values
   as mwes-invoice / spa-scheduler).
 
 **Setup steps required in the shared project's dashboard** (one-time, manual):
-1. SQL Editor → run `supabase/migrations/20260706000000_breman_schema.sql`
-2. Project Settings → API → **Exposed schemas** → add `breman`
-3. Storage → create bucket `breman-media` (private)
+1. SQL Editor → run `supabase/migrations/20260706000000_cavvy_schema.sql`
+2. Project Settings → API → **Exposed schemas** → add `cavvy`
+3. Storage → create bucket `cavvy-media` (private)
 4. Point `.env.local` at the shared project's URL + anon key
 
 ## 2. Light theme
@@ -101,7 +101,7 @@ Implementation:
 - `lib/utils/breeding.ts` — pure date math (`getBreedingSchedule`,
   `getEstrumateProjection`), plus per-event status derivation (which check is
   next / overdue, based on recorded `ultrasound_checks`).
-- New table `breman.hormone_treatments` — estrumate, regumate, deslorelin, hCG,
+- New table `cavvy.hormone_treatments` — estrumate, regumate, deslorelin, hCG,
   oxytocin, lutalyse, other; date, dose, administered_by, notes. Estrumate shots
   are real events (they drive the plan), so they're stored; everything derived
   from them is computed.
@@ -130,7 +130,7 @@ The schema already had the right bones (`sire_id`/`dam_id` self-references on
 
 - `horses.profile_photo_url` — a face for every horse: shown on the detail page
   header, the family cards, and the offspring grid. Upload goes to the
-  `breman-media` storage bucket via the browser client (falls back to pasting a URL).
+  `cavvy-media` storage bucket via the browser client (falls back to pasting a URL).
 - Registration papers ride the existing `documents` table (`doc_type: 'registration'`)
   instead of a new column — one system for all papers. The detail page's Documents
   tab lists documents by type with add/delete, and the Overview tab surfaces the

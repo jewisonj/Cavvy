@@ -1,5 +1,7 @@
 # BreMan — Equine Breeding Management System
 
+> **Note (July 2026):** The project has been renamed **Cavvy** (a working ranch's horse herd) and repositioned as a full farm/stable manager. This document is the original BreMan planning spec, kept for historical reference — schema and feature intent still apply, but the app name, `cavvy` Postgres schema, and shared Supabase project supersede the naming and infrastructure notes below.
+
 **Project name:** BreMan (Breeding Manager)
 **Owner:** Jack
 **Scale:** ~15 AQHA broodmares + offspring, generational tracking
