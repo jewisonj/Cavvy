@@ -66,14 +66,14 @@ export default function HorsesList({ horses }: HorsesListProps) {
                   <span
                     className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
                       horse.owned
-                        ? 'bg-green-500/10 text-green-500'
-                        : 'bg-gray-500/10 text-gray-500'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-gray-100 text-gray-600'
                     }`}
                   >
                     {horse.owned ? 'Owned' : 'Outside'}
                   </span>
                   {horse.broodmare_active && horse.sex === 'mare' && (
-                    <span className="ml-2 inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-500/10 text-blue-500">
+                    <span className="ml-2 inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-700">
                       Broodmare
                     </span>
                   )}

@@ -36,7 +36,7 @@ export default async function HorsesPage() {
 
       {error ? (
         <div className="panel p-6 text-center">
-          <p className="text-red-500">Error loading horses. Please try again.</p>
+          <p className="text-red-600">Error loading horses. Please try again.</p>
         </div>
       ) : (
         <HorsesList horses={horses || []} />

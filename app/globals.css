@@ -1,16 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/* Light theme palette — Tailwind v4 CSS-first config.
+   Token names preserved from the original dark theme so existing
+   bg-background / text-text-* / border-border classes keep working. */
+@theme {
+  --color-background: #ffffff;
+  --color-background-panel: #f8f9fa;
+  --color-background-hover: #eef1f4;
+
+  --color-border: #e2e5e9;
+  --color-border-hover: #c9cfd6;
+
+  --color-text-primary: #1a1d21;
+  --color-text-secondary: #5c6570;
+  --color-text-muted: #8a939e;
+
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+}
 
 @layer base {
-  :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 96%;
-  }
-
   body {
     @apply bg-background text-text-primary;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 }
 
@@ -30,12 +42,26 @@
   }
 
   .btn-secondary {
-    @apply bg-background-panel hover:bg-background-hover border border-border text-text-primary px-4 py-2 rounded-md transition-colors;
+    @apply bg-background hover:bg-background-hover border border-border text-text-primary px-4 py-2 rounded-md transition-colors;
+  }
+
+  /* Form controls */
+  .form-input {
+    @apply w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium mb-2;
+  }
+
+  /* Alert/error block */
+  .alert-error {
+    @apply p-4 bg-red-50 border border-red-200 rounded-md text-red-700;
   }
 
   /* Table styles */
   .table-container {
-    @apply panel overflow-x-auto;
+    @apply bg-background-panel border border-border rounded-lg overflow-x-auto;
   }
 
   .data-table {
@@ -54,16 +80,16 @@
     @apply py-3 px-4 border-t border-border;
   }
 
-  .data-table tr {
-    @apply panel-hover cursor-pointer;
+  .data-table tbody tr {
+    @apply hover:bg-background-hover transition-colors cursor-pointer;
   }
 
   /* Slide-out panel */
   .slide-panel {
-    @apply fixed top-0 right-0 h-full w-full md:w-2/3 lg:w-1/2 panel shadow-2xl transform transition-transform duration-300 ease-in-out z-50;
+    @apply fixed top-0 right-0 h-full w-full md:w-2/3 lg:w-1/2 bg-background border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-50;
   }
 
   .slide-panel-backdrop {
-    @apply fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300;
+    @apply fixed inset-0 bg-black/30 transition-opacity duration-300 z-40;
   }
 }

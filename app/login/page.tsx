@@ -62,7 +62,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                className="form-input"
                 placeholder="you@example.com"
               />
             </div>
@@ -77,13 +77,13 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                className="form-input"
                 placeholder="••••••••"
               />
             </div>
 
             {error && (
-              <div className="p-3 bg-red-500/10 border border-red-500/50 rounded-md text-red-500 text-sm">
+              <div className="alert-error p-3 text-sm">
                 {error}
               </div>
             )}

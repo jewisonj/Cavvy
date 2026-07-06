@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { signOut } from '@/lib/auth/utils'
+import { createClient } from '@/lib/supabase/client'
 import type { UserProfile } from '@/lib/types/database'
 
 interface AppNavProps {
@@ -13,7 +13,7 @@ export default function AppNav({ profile }: AppNavProps) {
   const router = useRouter()
 
   const handleSignOut = async () => {
-    await signOut()
+    await createClient().auth.signOut()
     router.push('/login')
     router.refresh()
   }
