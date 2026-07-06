@@ -46,6 +46,12 @@ export default function AppNav({ profile }: AppNavProps) {
               >
                 Breeding
               </Link>
+              <Link
+                href="/app/foaling"
+                className="text-text-secondary hover:text-text-primary transition-colors px-3 py-2"
+              >
+                Foaling
+              </Link>
             </div>
           </div>
 
