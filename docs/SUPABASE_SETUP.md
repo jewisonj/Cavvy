@@ -61,7 +61,7 @@ mwes-invoice and spa-scheduler use:
 NEXT_PUBLIC_SUPABASE_URL=https://your-shared-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=shared-project-anon-key
 SUPABASE_SERVICE_ROLE_KEY=shared-project-service-role-key
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:4000
 ```
 
 Never commit `.env.local` (already gitignored).
@@ -85,7 +85,7 @@ RLS denies every table. That's the isolation boundary between the apps' users.
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000), log in, and you should land on
+Open [http://localhost:4000](http://localhost:4000), log in, and you should land on
 the dashboard. Add a horse to confirm writes work.
 
 ## Troubleshooting

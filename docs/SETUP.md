@@ -41,7 +41,7 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ANTHROPIC_API_KEY=sk-ant-api...
 
 # App URL
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:4000
 ```
 
 ### 4. Install Dependencies
@@ -56,7 +56,7 @@ npm install
 npm run dev
 ```
 
-Navigate to [http://localhost:3000](http://localhost:3000)
+Navigate to [http://localhost:4000](http://localhost:4000)
 
 ## Database Management
 
@@ -96,7 +96,7 @@ After the schema is created, you'll want to add:
 3. Enable Google Drive API
 4. Create OAuth 2.0 credentials
 5. Add authorized redirect URIs:
-   - `http://localhost:3000/api/auth/callback/google` (development)
+   - `http://localhost:4000/api/auth/callback/google` (development)
    - `https://your-domain.fly.dev/api/auth/callback/google` (production)
 
 ### Google Photos API
