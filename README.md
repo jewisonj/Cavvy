@@ -52,15 +52,11 @@ BreMan/
 
 4. Fill in your environment variables in `.env.local`
 
-5. Set up Supabase:
-   - Create a new Supabase project
-   - Run the migration:
-     ```bash
-     # Using Supabase CLI (recommended)
-     npx supabase db push
-
-     # Or run migrations manually in Supabase SQL editor
-     ```
+5. Set up Supabase — BreMan lives in the **shared project** (same one as
+   mwes-invoice and spa-scheduler), inside a dedicated `breman` schema.
+   Follow `docs/SUPABASE_SETUP.md`: run
+   `supabase/migrations/20260706000000_breman_schema.sql`, expose the
+   `breman` schema in the API settings, and create the `breman-media` bucket.
 
 6. Run the development server:
    ```bash
@@ -86,9 +82,9 @@ npm start
 
 ## Database Schema
 
-See `supabase/migrations/20260515_initial_schema.sql` for the complete database schema including:
+See `supabase/migrations/20260706000000_breman_schema.sql` for the complete database schema (all in the `breman` Postgres schema) including:
 
-- **Core Tables**: horses, breeding_events, heat_observations, ultrasound_checks, foaling_events
+- **Core Tables**: horses, breeding_events, heat_observations, ultrasound_checks, foaling_events, hormone_treatments
 - **Supporting Tables**: attachments, documents, semen_shipments, foaling_prep_observations
 - **Post-MVP**: costs, breeding_contracts, stallion_details, health_events, alerts
 
@@ -115,7 +111,7 @@ See `supabase/migrations/20260515_initial_schema.sql` for the complete database 
 ## Design Philosophy
 
 - **Mobile-first**: Primary data entry happens at the barn via phone
-- **Dark theme**: Easy on the eyes for long sessions and barn lighting
+- **Light theme**: Clean, high-contrast surfaces that read well on phones outdoors
 - **Table-forward**: Dense, scannable list views
 - **Slide-out panels**: Quick detail views without losing context
 - **Voice-driven**: Walkie-talkie style push-to-talk for hands-free entry
